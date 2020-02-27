@@ -1,5 +1,5 @@
 #
-# docker build -t ansible . -f Dockerfile.
+# docker build -t ansible . -f Dockerfile
 # docker run -d -it -v $(pwd):/ansible --env-file ./my_env_file.txt --name ansible ansible
 # docker exec -it ansible /bin/bash
 #
@@ -30,7 +30,9 @@ RUN set -x && \
 
 # Install IBM Cloud Ansible Collection
 RUN set -x && \
+  mkdir -p /root/.ansible/plugins/modules && \
+  mkdir -p /root/.ansible/plugins/module_utils && \
   git clone ${ansiblemodule} && \
-  cd ansible-collection-ibm && \
-  cp modules/* /usr/local/lib/python3.6/site-packages/ansible/modules/. && \
-  cp module_utils/* /usr/local/lib/python3.6/site-packages/ansible/module_utils/.
+  cd ansible-collection-ibm/plugins && \
+  cp modules/* /root/.ansible/plugins/modules/. && \
+  cp module_utils/* /root/.ansible/plugins/module_utils/.
